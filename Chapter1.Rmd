@@ -1,0 +1,29 @@
+
+---
+title: "Chapter 1: Computer Arithmetic"
+output:
+  pdf_document: 
+    toc: true
+    toc_depth: 2
+    number_sections: true
+  html_notebook: default
+---
+
+```{r include = FALSE}
+# refresh environment
+rm(list = ls())
+library(mdsr) # utility package for tidyverse
+```
+
+# Introduction to Numerical Computation
+
+# Representation of numbers in different bases
+
+# Floating Point Representation
+
+# Loss of Significance
+
+# Review of Taylor Series
+
+# Finite Difference Approximation
+
