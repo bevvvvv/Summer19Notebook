@@ -1,0 +1,108 @@
+
+---
+title: "Chapter 1: Computer Arithmetic"
+output:
+  pdf_document: 
+    toc: true
+    toc_depth: 2
+    number_sections: true
+  html_notebook: default
+---
+
+```{r include = FALSE}
+# refresh environment
+rm(list = ls())
+library(dplyr) # utility package for tidyverse
+library(R.matlab)
+library(tidyverse)
+```
+
+# Introduction to Numerical Computation
+
+## Numerical Methods
+
+They are **algorithms** that compute **approximations** to functions, their derivatives, their integrations, and solutions to various equations etc. Such algorithms could be programmed on a computer.
+
+![](./Media/numericalMethodsModel.png)
+
+Numerical methods are not about numbers. It is about mathematical ideas and insight. A little idea can go a long way. Some classical problems:
+
+* Development of algoritms
+* Implementation
+* Some analysis, including error-estimates, convergence, stability, etc.
+
+**Matlab**
+
+# Representation of numbers in different bases
+
+There have been several different ways of representing numbers:
+
+* 10: decimal, daily use
+* 2: binary, computer use
+* 8: octal
+* 16: hexadecimal, ancient China
+* 20: vigesimal, ancient France (can be seen in french language)
+* 60: sexagesimal, used by Babylonians
+
+In principle we can use any number $\beta$ as the base. Writing such a number with a decimal point gives us an integer part and fraciton part.
+
+![](./Media/integerFractionPart.png)
+
+This above formula allows us to convert a number in any base $\beta$ into base 10.
+
+## Examples
+
+### Octal to Decimal
+
+We have (45.12)~8~.
+\[
+4 * 8^1 + 5 * 8^0 + 1 * 8^{-1} + 2 * 8^{-2} = (37.15625)_{10}
+\]
+
+### Octal to Binary
+
+![](./Media/octoBinary.png)
+
+Since 8 is a power of 2 it makes it very easy to convert from octal to binary:
+\[
+(5034)_8 = (101 000 011 100)_2
+\]
+
+Each digit in octal gets converted to 3 digits in binary. And vice versa...
+
+You can also go back from binary to octal:
+\[
+(110010111001)_2 = (6271)_8
+\]
+
+### Decimal to Binary
+
+Write (12.45)~10~ in binary. (base 2)
+This is particularly interesting because we use decimal and computer uses binary.
+This conversion takes two steps.
+First we convert the integer part into binary.
+
+Procedure: Divide the integer by 2 and store the remainder of each step until integer is zero. (Euclid's algorithm.)
+
+![](./Media/decBinary.png)
+
+Now to convert the fractional part to binary you multiply by 2 and store the integer part for the result.
+
+![](./Media/decFractionBinary.png)
+
+Note that the fractional part here is not finite.
+Putting them together:
+\[
+(12.45)_{10} = (1100.01110011001100...)_2
+\]
+
+So how do we store this kind of a number in a computer?
+
+# Floating Point Representation
+
+# Loss of Significance
+
+# Review of Taylor Series
+
+# Finite Difference Approximation
+
