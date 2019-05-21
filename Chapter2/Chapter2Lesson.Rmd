@@ -1,0 +1,127 @@
+---
+title: "Chapter 2: Polynomial Interpolation"
+output:
+  pdf_document: 
+    toc: true
+    toc_depth: 2
+    number_sections: true
+  html_notebook: default
+---
+
+```{r include = FALSE}
+# refresh environment
+rm(list = ls())
+library(dplyr) # utility package for tidyverse
+library(tidyverse)
+```
+
+# Polynomial Interpolation
+
+In this chapter we study how to interpolate a data set with a polynomial.
+
+**Problem Description**: Given (n+1) points, say(x~i~, y~i~), where i = 0,1,2,...,n, with distinct
+x~i~, not necessarily sorted, we want to find a polynomial of degree n:
+
+\[
+P_n(x) = a_nx^n + a_{n-1}x^{n-1}+...+a_1x+a_0
+\]
+
+such that it interpolates these points, i.e.,
+
+\[
+P_n(x)= y_i, i = 0,1,2,...,n
+\]
+
+The goal is the determine the coefficients $a_n, a_{n-1},...,a_1,a_0$. Note the total number of data poitns
+is 1 larger than the degree of the polynomial.
+
+Why should we do this?
+
+* Find the values between the points for discrete data set
+* To approximate a (probably complicated) function by a polynomial
+* Then, it is easier to do computations such as derivative, integrations, etc...
+
+## Van Der Monde Matrix Example
+
+Interpolate the given data set with a polynomial of degree 2:
+
+$$
+\begin{tabular}{c|c|c|c|}
+x$_i$ & 0 & 1 & 2/3\\
+y$_i$ & 1 & 0 & 0.5
+\end{tabular}
+$$
+
+**Answer** Let
+
+\[
+P_2(x) = a_2x^2 + a_1x+ a_0
+\]
+
+We need to find the coefficients $a_2, a_1, a_0$.
+By the interpolating properties, we have 3 equations:
+
+\[x = 0, y = 1 : P_2(0) = a_0 = 1\]
+\[x = 1, y = 0 : P_2(1) = a_2+a_1+a_0 = 0\]
+\[x = \frac23, y = 0.5 : P_2(\frac23) = (\frac49)a_2+(\frac23)a_1+a_0=0.5\]
+
+Here we have 3 linear equations and 3 unknowns ($a_2, a_1, a_0$).
+
+
+The equations:
+
+\[a_0 = 1\]
+\[a_2 + a_1 = 0\]
+\[\frac49a_2+\frac23a_1+a_0=0.5\]
+
+In matrix-vector form:
+
+$$
+\left(\begin{array}{ccc} 
+0 & 0 & 1\\
+1 & 1 & 1\\
+\frac49 & \frac23 & 1
+\end{array}\right)
+\left(\begin{array}{c} 
+a_2 \\
+a_1 \\
+a_0
+\end{array}\right) =
+\left(\begin{array}{c}
+1 \\
+0 \\
+0.5
+\end{array}\right)
+$$
+
+Easy to solve in Matlab, or do it by hand:
+
+\[a_2 = -\frac34\]
+\[a_1 = -\frac14\]
+\[a_0 = 1\]
+
+Then
+
+\[P_2(x) = -\frac34x^2 -\frac14x + 1\]
+
+### The general case
+
+![](./Media/VanDerMondeGeneral.png)
+
+* X: a (n+1) x (n+1) matrix, given (Van Der Monde matrix)
+* a: unknown vector, with length (n + 1)
+* y: given vector, with length (n + 1)
+
+**Theorem** If x~i~'s are distinct, then X is invertible, therefore a has a unique solution.
+
+In Matlab, the command vander(x), where x is a vector that contains the interpolation points
+x = [$x_1, x_2, ...,x_n$], will generate this matrix.
+
+Bad News: X has a very large condition number for large n, therefore not effective to solve if n is large.
+
+
+
+
+
+
+
