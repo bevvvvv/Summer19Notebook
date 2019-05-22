@@ -168,12 +168,85 @@ Pros and cons of Lagrange polynomial:
 * (-) Slow to compute, since each cardinal function is different
 * (-) Not flexible: if one changes a point x~j~, or add on an additional point x~n+1~, one must recompute all cardinal functions.
 
+## Newton's divided differences
+
+Given a data set:
+
+$$
+\begin{tabular}{c|c|c|c|c|}
+x$_i$ & x$_0$ & x$_1$ & ... & x$_n$\\
+y$_i$ & y$_0$ & y$_1$ & ... & y$_n$
+\end{tabular}
+$$
+
+We will describe an algorithm in a recursive form.
+
+**Main idea:**
+
+Given $P_k(x)$ that interpolates k + 1 data points {$x_i, y_i$}, i = 0,1,2,...,k,
+compute $P_{k+1}(x)$ that interpolates one extra point, {$x_{k+1},y_{k+1}$}, by using P~k~ and adding an extra term
+
+For n = 0, we set $P_0(x) = y_0$. Then $P_0(x_0) = y_0$.
+
+For n = 1, we set
+
+\[P_1(x) = P_0(x) + a_1(x - x_0)\]
+
+where a~1~ is to be determined.
+
+Then, $P_1(x_0) = P_0(x_0) + 0 = y_0$, for any a~1~.
+
+Find a~1~ by the interpolation property $y_1 = P_1(x_1)$, we have
+
+\[y_1 = P_0(x_1) +a_1(x_1-x_0)=y+0+a_1(x_1-x_0)\]
+
+This gives us 
+
+\[a_1 = \frac{y_1 - y_0}{x_1-x_0}\]
+
+For n = 2, we set
+
+\[P_2(x) = P_1(x) + a_2(x-x_0)(x-x_1)\]
+
+Then $P_2(x_0) = P_1(x_0) = y_0, P_2(x_1) = P_1(x_1) = y_1$.
+
+Determine a~2~ by the interpolation property $y_2 = P_2(x_2)$
+
+\[y_2 = P_1(x_2) + a_2(x_2 - x_0)(x_2-x_1)\]
+
+Then
+
+\[a_2 = \frac{y_2 - P_1(x_2)}{(x_2-x_0)(x_2-x_1)}\]
+
+We would like to express a~2~ in a different way. Recall
+
+\[P_1(x) = y_0 + \frac{y_1-y_0}{x_1-x_0}(x - x_0)\]
+
+Then 
+
+\[P_1(x_2) = y_0 + \frac{y_1-y_0}{x_1-x_0}(x_2 - x_0)\]
+\[P_1(x_2) = y_0 + \frac{y_1-y_0}{x_1-x_0}(x_2 - x_1) + \frac{y_1-y_0}{x_1-x_0}(x_1 - x_0)\]
+\[P_1(x_2) = y_1 + \frac{y_1-y_0}{x_1-x_0}(x_2 - x_1)\]
+
+Then a~2~ can be rewritten as
+
+\[a_2 = \frac{y_2 - {P_1(x_2)}}{(x_2-x_0)(x_2-x_1)} = \frac{y_2-y_1-\frac{y_1-y_0}{x_1-x_0}(x_2-x_1)}{(x_2-x_0)(x_2-x_1)}=\frac{\frac{y_2-y_1}{x_2-x_1}-\frac{y_1-y_0}{x_1-x_0}}{x_2-x_0}\]
 
 
+(Rise over the run? Secant lines represented...)
+
+\[a_2 \approx \frac{f'(x_2)-f'(x_0)}{x_2-x_0} \approx f''()\]
+
+and a_1 is an approximate first derivative.
+
+### The general case:
+
+![](./Media/newtonDivideGeneral.png)
 
 
+Newton's form for the interpolation polynomial:
 
-
+\[P_n(x) = a_0 + a_1(x - x_0) + a_2(x-x_0)(x-x_1)+...+a_n(x-x_0)(x-x_1)...(x-x_{n-1})\]
 
 
 
