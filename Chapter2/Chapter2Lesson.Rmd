@@ -119,6 +119,59 @@ x = [$x_1, x_2, ...,x_n$], will generate this matrix.
 
 Bad News: X has a very large condition number for large n, therefore not effective to solve if n is large.
 
+## Lagrange Form
+
+Given points: $x_0,x_1,...,x_n$
+
+Define the **cardinal functions** $I_0,I_1,...,I_n:\in P^n$, satisfying the properties
+
+![](./Media/lagrangeProperties.png)
+
+Here $\delta_{ij}$ is called the Kronecker's delta.
+
+Locally supported in discrete sense. The cardinal functions I_i(x) can be written as:
+
+![](./Media/CardinalFuncForm.png)
+
+Lagrange form of the interpolation polynomial can be simply expressed as 
+
+\[P_n(x) = \Sigma I_j(x) * y_i\]
+
+It is easy to check the interpolating property:
+
+\[P_n(x_j) = \Sigma I_i(x_j) * y_i = y_j\]
+
+for every j. (The cardinal function is 1 at x~i~, so y~i~ is multiplied by 1).
+
+**Example 2** Write the Lagrange polynomial for the data
+
+$$
+\begin{tabular}{c|c|c|c|}
+x$_i$ & 0 & 1 & 2/3\\
+y$_i$ & 1 & 0 & 0.5
+\end{tabular}
+$$
+
+**Answer** We first ocmpute the cardinal functions
+
+\[I_0(x) = \frac{(x-x_1)(x-x_2)}{(x_0-x_1)(x_0-x_2)} = \frac{(x-2/3)(x-1)}{(0-2/3)(0-1)} = \frac32(x - \frac23)(x-1)\]
+\[I_1(x) = \frac{(x-x_0)(x-x_2)}{(x_1-x_0)(x_1-x_2)} = \frac{(x-0)(x-1)}{(2/3-0)(2/3-1)} = -\frac92x(x-1) \]
+\[I_2(x) = \frac{(x-x_0)(x-x_1)}{(x_2-x_0)(x_2-x_1)} = \frac{(x-0)(x-2/3)}{(1-0)(1-2/3)} = 2x(x-\frac23) \]
+
+so
+
+\[P_2(x) = I_0(x)y_0+I_1(x)y_1+I_2(x)y_2 = \frac32(x - \frac23)(x-1) -\frac92x(x-1)(0.5) + 0 = -\frac34x^2-\frac14+1\]
+
+Pros and cons of Lagrange polynomial:
+
+* (+) Elegant Formula
+* (-) Slow to compute, since each cardinal function is different
+* (-) Not flexible: if one changes a point x~j~, or add on an additional point x~n+1~, one must recompute all cardinal functions.
+
+
+
+
+
 
 
 
