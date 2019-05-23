@@ -356,6 +356,171 @@ Now, let $g(x) = p(x) - q(x)$, a polynomial of degree $\leq n$.
 So g(x) has n+1 zeros. By the Fundamental Theorem of Algebra (max n roots), we must have g(x) = 0, therefore p(x) is
 congruent to q(x).
 
+# Errors in Polynomial Interpolation
+
+Given a function f(x) on $x \in [a,b]$, and a set of distinct points $x_i \in [a,b]$,
+i = 0,1,...,n. Let $P_n(x) \in P_n$ such that..
+
+\[P_n(x_i) = f(x_i),i=0,1,..,n\]
+
+Error function
+
+\[e(x) = f(x) - P_n(x), x\in [a,b]\]
+
+**Theorem**. There exists some value $\xi \in [a,b]$, such that
+
+\[e(x) = \frac1{(n+1)!}\xi\Pi(x-x_i),x\in [a,b]\]
+
+**Proof**
+
+If $f \in P_n$, then by Uniqueness Theorem of polynomial interpolation we must have $f(x) = P_n(x)$.
+Then e(x) == 0 and the proof is trivial.
+
+Now assume $f \notin P_n(x)$. If $x=x_i$ for some i, we have $e(x_i) = f(x_i) - P_n(x_i) = 0$, and the results holds.
+
+Now consider $x \neq x_i$ for any i.
+
+\[W(x) = \Pi(x-x_i) \in P_{n+1}\]
+
+it holds:
+
+\[W(x_i) = 0\]
+\[w(x) = x^{n+1}+...\]
+\[W^{(n+1)} = (n+1)!\]
+
+Fix a y such that $y \in [a,b]$ and $y \neq x_i$ for any i. We define a constant
+
+\[c = \frac{f(y)-P_n(y)}{W(y)}\]
+
+and another function
+
+\[\phi(x) = f(x) - P_n(x) - cW(x)\]
+
+We find all the zeros for $\phi(x)$. We see that x~i~'s are zeros since
+
+\[\phi(x_i)=f(x_i)-P_n(x_i)-cW(x_i) = 0, i = 0,1,...,n\]
+
+and also y is a zero because
+
+\[\phi(y) = f(y) - P_n(y) -cW(y) = 0\]
+
+So, $\phi$ has at least (n+2) zeros.
+
+
+![](./Media/ErrorProofFinish.png)
+
+## Error fomula Example
+
+Recall the error formula:
+
+\[e(x) = \frac1{(n+1)!}\xi\Pi(x-x_i)\]
+
+**Example** If n = 1, x~0~ = a, x~1~ = b, b > a, find an upper bound for error.
+
+**Answer** Let
+
+\[M = max|f''(x)| = ||f''(x)||_\infty\]
+
+and observe
+
+\[max|(x-a)(x-b)|=\frac{(b-a)^2}4\]
+
+For $x \in [a,b]$, we have
+
+\[|e(x)| = \frac12|f''(\xi)|*|(x-a)(x-b)| \leq \frac12||f''||_\infty\frac{(b-a)^2}4=\frac18||f''||_\infty(b-a)^2\]
+
+Error depends on the distribution of nodes x~i~. If b is close to a, then we have a small error bound.
+
+
+# Unifrom Grid
+
+Equally distribute the nodes (x~i~): on [a,b], with n+1 nodes.
+
+\[x_i = a + ih, h = \frac{b-a}n, i = 0,1,...,n\]
+
+One can show that for $x \in [a,b]$, it holds
+
+\[\Pi|x-x_i| \leq \frac14h^{n+1}*n!\]
+
+**Proof** If x = x~i~ for some i, then x-x~i~ = 0 and the product is zero, so it trivially holds.
+
+Now assume x~i~ < x < x~i+1~. We have
+
+\[max|(x-x_i)(x-x_{i+1}| = \frac14(x_{i+1}-x_i)^2=\frac{h^2}4\]
+
+Now consider the other terms in the product, say x-x~j~, for either j > i + 1, or j < i. Then $|(x-x)j| \leq h(j-i)$ for j > i + 1 and 
+$|(x-x)j| \leq h(i+1-j)$ for j < i. In all cases, the product of these terms are bounded by $h^{n-1}n!$, proving the result.
+
+We have the error estimate
+
+\[|e(x)| \leq \frac1{4(n+1)}|f^{(n+1)}(x)|h^{n+1}\leq\frac{M_{n+1}}{4(n+1)}h^{n+1}\]
+
+where
+
+\[M_{n+1} = max|f^{(n+1)}(x)|=||f^{(n+1)}||_\infty\]
+
+**Example** Consider interpolating f(x) = sin($\pi$x) with polynomial on the interval [-1, 1] with uniform noes. Give an upper bound for error.
+
+**Answer** Since
+
+\[f'(x)=\pi cos \pi x\]
+\[f''(x) = -\pi^2sin\pi x\]
+\[f'''(x) = -pi^3cos\pi x\]
+
+we have 
+
+\[|f^{(n+1)}(x)| \leq \pi^{n+1},M_{n+1}=\pi^{n+1}\]
+
+so the upper bound for error is
+
+\[|e(x)| \leq \frac{M_{n+1}}{4(n+1)}h^{n+1} \leq \frac{\pi^{n+1}}{4(n+1)}(\frac2n)^{n+1}\]
+
+
+Simulation Data:
+
+![](./Media/GridSimulation.png)
+
+# Chebychev nodes: equally distributing the error
+
+Type I: including the end points.
+
+For interval [-1,1]: $\overline x_i = cos(\frac{i}{n}\pi), i = 0,1,...,n$
+
+For interval [a,b] : $\overline x_i = \frac12(a+b) + \frac12(b-a)cos(\frac{i}{n}\pi), i = 0,1,...,n$
+
+One can show that:
+
+![](./Media/chebNodes.png)
+
+where x~k~ is any other choice of nodes.
+
+Error bound: $|e(x)| \leq \frac1{(n+1)!}|f^{(n+1)}(x)|2^{-n}$
+
+**Example** Consider the same example with uniform nodes, $f(x) = sin\pi x$
+
+With Chebyshev nodes, we have
+
+\[|e(x)| \leq \frac1{(n+1)!}\pi^{n+1}2^{-n}\]
+
+Now look at the much smaller error bounds!
+
+![](./Media/chebSimErrors.png)
+
+Type II: Chebyshev nodes can be chosen strictly inside the interval (a,b):
+
+\[\overline x_i = \frac12(a+b) + \frac12(b-a)cos(\frac{2i+1}{2n+2}\pi),i=0,1,...,n\]
+
+
+# Discussion
+
+For large n, polynomials are heavy to deal with.
+
+In general, interpolation polynomials do not coverge as n gets closer to infinity.
+
+For small intervals, the error with polynomial interpolation is small.
+
+Conclusion: Better to use piecewise polynomial interpolation - next chapter (splines). This uses polynomials
+of not so high power on smaller intervals.
 
 
 
