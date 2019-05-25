@@ -1,0 +1,150 @@
+---
+title: "Chapter 2: Polynomial Interpolation"
+output:
+  pdf_document: 
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    keep_tex: true
+  html_notebook: default
+---
+
+```{r include = FALSE}
+# refresh environment
+rm(list = ls())
+library(dplyr) # utility package for tidyverse
+library(tidyverse)
+```
+
+# Problem 1
+
+Consider the polynomial interpolation for the following data points:
+
+$$
+\begin{tabular}{c|c|c|c|}
+x & 1 & 2 & 3\\
+y & 3 & 4 & 5
+\end{tabular}
+$$
+
+## a. Write down the linear system in matrix form for solving the coefficients a~i~ of the polynomial p~n~(x).
+
+$$
+\left(\begin{array}{ccc} 
+1 & 1 & 1\\
+4 & 2 & 1\\
+9 & 3 & 1 
+\end{array}\right)
+\left(\begin{array}{c} 
+a_2 \\
+a_1 \\
+a_0
+\end{array}\right) =
+\left(\begin{array}{c}
+3 \\
+4 \\
+5
+\end{array}\right)
+$$
+
+## b. Use the lagrange interpolation process to obtain a polynomial to approximate these data points.
+
+First let's define some cardinal functions:
+
+\[I_0(x)=\frac{(x - x_1)(x-x_2)}{(x_0-x_1)(x_0-x_2)}=\frac{(x-2)(x-3)}{(1-2)(1-3)}=\frac{(x-2)(x-3)}{2}=\frac12(x-2)(x-3)\]
+\[I_1(x)=\frac{(x - x_0)(x-x_2)}{(x_1-x_0)(x_1-x_2)}=\frac{(x-1)(x-3)}{(2-1)(2-3)}=\frac{(x-1)(x-3)}{-1}=-(x-1)(x-3)\]
+\[I_2(x)=\frac{(x - x_0)(x-x_1)}{(x_2-x_0)(x_2-x_1)}=\frac{(x-1)(x-2)}{(3-1)(3-2)}=\frac{(x-1)(x-2)}{2}=\frac12(x-1)(x-2)\]
+
+Then plug our cardinal functions into the equation:
+
+\[P_2(x)=I_0(x)y_0+I_1(x)y_1+I_2(x)y_2 = 3*(\frac12(x-2)(x-3)) + 4*(-(x-1)(x-3)) + 5*(\frac12(x-1)(x-2))\]
+\[P_2(x) = \frac32(x^2-5x+6)-4(x^2-4x+3)+\frac52(x^2-3x+2)\]
+\[P_2(x) = \frac32x^2-4x^2+\frac52x^2-15x+16x+9-12+5\]
+\[P_2(x) = x+2\]
+
+Which is a polynomial that does in fact contain all of our given data points!
+
+# Problem 2
+
+
+## a. Use the Lagrange interpolation process to obtain a polynomial of least degree that assumes these values
+
+$$
+\begin{tabular}{c|c|c|c|c|}
+x & 0 & 2 & 3 & 4\\
+y & 7 & 11 & 28 & 63
+\end{tabular}
+$$
+
+First let's define some cardinal functions.
+
+\[I_0(x) = \frac{(x-x_1)(x-x_2)(x-x_3)}{(x_0-x_1)(x_0-x_2)(x_0-x_3)}=\frac{(x-2)(x-3)(x-4)}{(0-2)(0-3)(0-4)}=\frac{(x-2)(x-3)(x-4)}{-24}\]
+\[I_1(x)=\frac{(x-x_0)(x-x_2)(x-x_3)}{(x_1-x_0)(x_1-x_2)(x_1-x_3)}=\frac{(x-0)(x-3)(x-4)}{(2-0)(2-3)(2-4)}=\frac{x(x-3)(x-4)}{4}\]
+\[I_2(x)=\frac{(x-x_0)(x-x_1)(x-x_3)}{(x_2-x_0)(x_2-x_1)(x_2-x_3)}=\frac{(x-0)(x-2)(x-4)}{(3-0)(3-2)(3-4)}=\frac{x(x-2)(x-4)}{-3}\]
+\[I_3(x)=\frac{(x-x_0)(x-x_1)(x-x_2)}{(x_3-x_0)(x_3-x_1)(x_3-x_2)}=\frac{(x-0)(x-2)(x-3)}{(4-0)(4-2)(4-3)}=\frac{x(x-2)(x-3)}{8}\]
+
+Then plug our cardinal functions into the equation:
+
+\[P_3(x)=I_0(x)y_0+I_1(x)y_1+I_2(x)y_2+I_3(x)y_3\]
+\[P_3(x)=7*(\frac{(x-2)(x-3)(x-4)}{-24}) + 11*(\frac{x(x-3)(x-4)}{4}) + 28*(\frac{x(x-2)(x-4)}{-3}) + 63*(\frac{x(x-2)(x-3)}{8})\]
+\[P_3(x)=\frac{-7}{24}(x^3-9x^2+26x-24)+\frac{11}4(x^3-7x^2+12x)+\frac{-28}3(x^3-6x^2+8x)+\frac{63}8(x^3-5x^2+6x)\]
+\[P_3(x)=\frac{-7}{24}x^3+\frac{11}4x^3-\frac{28}3x^3+\frac{63}8x^3+\frac{63}{24}x^2-\frac{77}4x^2+\frac{168}3x^2-\frac{315}8x^2-\frac{182}{24}x+\frac{132}4x-\frac{224}3x+\frac{378}8x+7\]
+\[P_3(x)=x^3-2x+7\]
+
+And this polynomial includes all of our sample points!
+
+## b. For the points in the previous table, find the Newton's form of the interpolating polynomial. Show that the two polynomials obtained are identical, although their forms may differ.
+
+The general equation for n = 3:
+
+\[P_3(x) = a_0 + a_1(x-x_0) + a_2(x-x_0)(x-x_1)+a_3(x-x_0)(x-x_1)(x-x_2)\]
+
+Then let's calculate the coefficients using our triangular matrix:
+
+$$
+\begin{tabular}{c|c|c|c|c|}
+0 & 7 \\
+2 & 11 & 2\\
+3 & 28 & 17 & 5\\
+4 & 63 & 35 & 9 & 1\\
+\end{tabular}
+$$
+
+Which results in the polynomial:
+
+\[P_3(x) = 7 + 2x + 5x(x-2)+x(x-2)(x-3)\]
+\[P_3(x) = x^3-2x+7\]
+
+This is identical to the simplified polynomial in step a!
+
+## c. The polynomial $p(x) = x^4 - x^3 + x^2 - x + 1$ has the values shown
+
+$$
+\begin{tabular}{c|c|c|c|c|c|c|}
+x & -2 & -1 & 0 & 1 & 2 & 3 \\
+p(x) & 31 & 5 & 1 & 1 & 11 & 61
+\end{tabular}
+$$
+
+Find a polynomial q(x) that takes the same values (you don't need to expand it):
+
+If we proceed with Lagrange form, then we can start with cardinal functions.
+
+\[I_0(x) = \frac{(x+1)x(x-1)(x-2)(x-3)}{(-2+1)(-2)(-2-1)(-2-2)(-2-3)}=\frac{-1}{120}x(x+1)(x-1)(x-2)(x-3)\]
+\[I_1(x) = \frac{(x+2)x(x-1)(x-2)(x-3)}{(-1+2)(-1)(-1-1)(-1-2)(-1-3)}=\frac{1}{24}x(x+2)(x-1)(x-2)(x-3)\]
+\[I_2(x) = \frac{(x+2)(x+1)(x-1)(x-2)(x-3)}{(0+2)(0+1)(0-1)(0-2)(0-3)}=\frac{-1}{12}(x+2)(x+1)(x-1)(x-2)(x-3)\]
+\[I_3(x) = \frac{x(x+2)(x+1)(x-2)(x-3)}{(1+2)(1+1)(1)(1-2)(1-3)}=\frac{1}{12}x(x+2)(x+1)(x-2)(x-3)\]
+\[I_4(x) = \frac{x(x+2)(x+1)(x-1)(x-3)}{(2+2)(2+1)(2)(2-1)(2-3)}=\frac{-1}{24}x(x+2)(x+1)(x-1)(x-3)\]
+\[I_5(x) = \frac{x(x+2)(x+1)(x-1)(x-2)}{(3+2)(3+1)(3)(3-1)(3-2)}=\frac{1}{120}x(x+2)(x+1)(x-1)(x-2)\]
+
+Then plug them into our polynomial:
+
+\[P_5(x) = 31*(\frac{-1}{120}x(x+1)(x-1)(x-2)(x-3)) + 5*(\frac{1}{24}x(x+2)(x-1)(x-2)(x-3)) ...\]
+\[+ \frac{-1}{12}(x+2)(x+1)(x-1)(x-2)(x-3) + \frac{1}{12}x(x+2)(x+1)(x-2)(x-3) + 11*(\frac{-1}{24}x(x+2)(x+1)(x-1)(x-3)) ...\]
+\[+ 61*(\frac{1}{120}x(x+2)(x+1)(x-1)(x-2))\]
+
+
+
+
+
+
