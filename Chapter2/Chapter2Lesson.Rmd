@@ -83,9 +83,9 @@ $$
 \frac49 & \frac23 & 1
 \end{array}\right)
 \left(\begin{array}{c} 
-a_2 \\
+a_0 \\
 a_1 \\
-a_0
+a_2
 \end{array}\right) =
 \left(\begin{array}{c}
 1 \\
