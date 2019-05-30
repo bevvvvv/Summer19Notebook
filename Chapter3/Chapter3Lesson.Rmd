@@ -138,6 +138,103 @@ To minimize error, it is obvious that one should add more knots where the functi
 Since a quadratic spline is less used, please reference it within the book.
 
 
+# Natural Cubic Spline
+
+Given $t_0 < t_1 < ... < t_n$, we define the cubic spline with
+
+\[S(x) = S_i(x); t_i \leq x \leq t_{i+1}\]
+
+Write
+
+\[S_i(x) = a_ix^3 + b_ix^2 + c_ix + d_i, i = 0,1,...,n-1\]
+
+Total number of unknowns is 4 * n. Requirements are that S, S', S'' are all continuous.
+
+Equations we have:
+
+* $S_i(t_i) = y_i, i = 0,1,...,n-1$
+* $S_i(t_{i+1}) = y_{i+1}, i = 0,1,...,n-1$
+* $S_i'(t_{i+1}) = S_{i+1}'(t_{i+1}), i = 0,1,...,n-2$
+* $S_i''(t_{i+1}) = S_{i+1}''(t_{i+1}), i = 0,1,...,n-2$
+
+This gives us 4n-2 equations total, so we still need two more conditions.
+
+* $S_0''(t_0) = 0, S_{n-1}''(t_n)=0$
+
+These last two equations choice makes our spline a "natural" spline.
+
+How to compute S~i~(x)? We know:
+
+* S~i~ is polynomial degree 3
+* S~i~' is degree 2
+* S~i~'' is degree 1
+
+Procedure
+
+1. Start with S~i~''(x), they are all inear, one can use Lagrange form
+2. Integrate S~i~''(x) twice to get S~i~(x), you will get 2 integration constant
+3. Determine these constants. Various tricks on the way...
+
+Define: $z_i = S''(t_i), i = 1,2,...,n-1, z_0=z_n=0$
+
+These $z_i$'s are our unknowns.
+
+Let h~i~ = t~i+1~ -t~i~. Lagrange form for S~i~''.
+
+\[S_i''(x) = \frac{z_{i+1}}{h_i}(x-t_i)-\frac{z_i}{h_i}(x-t_{i+1})\]
+
+Then 
+
+\[S_i'(x) = \frac{z_{i+1}}{2h_i}(x-t_i)^2-\frac{z_i}{2h_i}(x-t_{i+1})^2+C_i-D_i\]
+\[S_i(x) = \frac{z_{i+1}}{6h_i}(x-t_i)^3-\frac{z_{i+1}}{6h_i}(x-t_{i+1})^3+c_i(x-t_i)-D_i(x-t_{i+1})\]
+
+You can check yourself that these two equations are correct.
+
+Interpolating Properties: $S_i(t_i) = y_i$
+
+\[y_i = -\frac{z_i}{6h_i}(-h_i)^3-D_i(-h_i)=\frac16z_ih_i^2+D_ih_i\]
+\[D_i = \frac{y_i}{h_i}-\frac{h_i}6z_i\]
+
+$S_i(t_{i+1}) = y_{i+1}$ gives
+
+\[y_{i+1} = \frac{z_{i+1}}{6h_i}h_i^3+C_ih_i\]
+\[C_i = \frac{y_{i+1}}{h_i}-\frac{h_i}6z_{i+1}\]
+
+We see that, once z~i~'s are known, then (C~i~, D~i~)'s are known, and so are S~i~, S~i~' are known.
+
+\[S_i(x)=\frac{z_{i+1}}{6h_i}(x-t_i)^3-\frac{z_i}{6h_i}(x-t_{i+1})^3+(\frac{y_{i+1}}{h_i}-\frac{h_i}6z_{i+1})(x-t_i)-(\frac{y_i}{h_i}-\frac{h_i}6z_i)(x-t_{i+1})\]
+\[S_i'(x)=\frac{z_{i+1}}{2h_i}(x-t_i)^2-\frac{z_i}{2h_i}(x-t_{i+1})^2+\frac{y_{i+1}-y_i}{h_i}-\frac{z_{i+1}-z_i}{6}h_i\]
+
+
+Continuity of S'(x) requires
+
+\[S_{i-1}'(t_i)=S_i'(t_i), i =1,2,...,n-1\]
+\[S_i'(t_i) = -\frac16h_iz_{i+1}-\frac13h_iz_i+b_i\]
+\[S_{i-1}'(t_i)=\frac16z_{i-1}h_{i-1}+\frac13z_ih_{i-1}+b_{i-1}\]
+
+Set them equal to each other and we get:
+
+![](./Media/naturalSplineProp.png)
+
+![](./Media/naturalSplineslide5.png)
+
+![](./Media/naturalSplineSlide6.png)
+
+Summarizing the algorithm:
+
+* Set up the matrix-vector equation and solve for z~i~
+* Compute S_i(x) using these z~i~'s
+
+See Matlab codes.
+
+# Smoothness Theorem for natural splines
+
+![](./Media/smoothSlide2.png)
+
+![](./Media/SmoothSlide3.png)
+
+![](./Media/SmoothSlide4.png)
+
 
 
 
