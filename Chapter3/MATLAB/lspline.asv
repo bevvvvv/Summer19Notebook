@@ -1,0 +1,25 @@
+function ls = lspline(t,y,x)
+%LSPLINE Computes the linear spline
+% Inputs
+%   t: vector, contains the knots
+%   y: vector, contains the interpolating values at knots
+%   x: vector, contains the points where the lspline function should be
+%   evaluated and plotted
+% Output
+%   ls: vector, contains the values of lspline at points x
+
+% assuming all x inputs are order in ascending order
+
+ls = zeros(1,length(x));
+currentPoint = 1;
+endPoint = length(t);
+
+for evalInd = 1:length(x)
+    while currentPoint < endPoint
+       
+    if x > 
+    end 
+end
+
+end
+
