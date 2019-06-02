@@ -258,6 +258,83 @@ ans =
 
 Which this 1.8 value is the same we got when manually evaluating the spline.
 
+Script to make plot:
+
+```{}
+x = 1.2:0.1:2.2;
+t = [1.2 1.5 1.6 2.0 2.2];
+y = [0.4275 1.139 0.8736 -0.9751 -0.1536];
+
+yVals = lspline(t,y,x);
+
+figure
+plot(x,yVals)
+grid on
+xlabel('Chosen Points')
+ylabel('Linear Spline Points')
+```
+
+And the plot! If you compared adding extra points in the plot, that it does not
+change what is plotted, because you maintain the piecewise linear plot.
+
+![](./Media/problem3Plot.png)
+
+# Problem 4
+
+I made a script that allows you to click the points on a screenshot of the image and it uses those points to run the spline interpolation that is then plotted. I clicked a series of twenty points, and more near the top in hopes that a higher resolution would make the top of the mountain sharper, since we konw that the cubic spline generates the smoothest interpolation. The peak does appear in the plot. I am including both the plot of the points and the Matlab printout of the points I clicked.
+
+```{}
+% display image
+everest = imread('../Media/mountEverest.png');
+image(everest)
+grid on
+
+% click knot points
+[t, y] = ginput(20);
+y = y.*-1;
+
+z = cspline(t, y);
+
+min = t(1);
+max = t(20);
+x = min:0.001:max;
+
+yPlot = cspline_eval(t, y, z, x);
+
+figure
+plot(x, yPlot)
+xlabel('Range of clicked points')
+ylabel('Interpolated Points')
+title('Interpolated ridge')
+```
+
+The points (x, y):
+
+* 10.3318 -207.3163
+* 32.3088 -188.9490
+* 61.2258 -166.9082
+* 95.9263 -141.1939
+* 128.3134 -115.4796
+* 173.4240  -81.6837
+* 197.7143  -62.5816
+* 212.7512  -52.2959
+* 239.3548  -42.7449
+* 252.0783  -44.9490
+* 272.8986  -47.1531
+* 287.9355  -61.1122
+* 316.8525  -80.9490
+* 337.6728 -110.3367
+* 361.9631 -154.4184
+* 373.5300 -186.7449
+* 378.1567 -182.3367
+* 389.7235 -173.5204
+* 411.7005 -155.8878
+* 462.5945 -218.3367
+
+![](./Media/mountEverestPlot.png)
+
+
+
 
 
 

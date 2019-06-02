@@ -253,5 +253,210 @@ S(x) = \left\{
 
 \[S(1.8) = S_2(1.8) = 0.8736 - 4.6218(1.8 - 1.6) =  -0.05076\]
 
+\subsection{b.}\label{b.}
+
+Let C(x) be the natural cubic spline that interploates the data.
+Describe what C(x) consists of, and what conditions it has to satisfy.
+Find C(x), and compute the value for C(1.8). The computation here can be
+time consuming, and you may use Matlab to solve the linear system.
+
+C(x) is a piecewise function that consists of 4 3rd degree polynomials.
+The fuction C(x) must be continous up to twice differentiable. In our
+case we our looking for a natural cubic spline, so the end points must
+have a second derivative of zero.
+
+\[
+S(x) = \left\{
+        \begin{array}{ll}
+            -18.8675x^3+4.0697x+0.4275 & \quad 1.2 \leq x \leq 1.5 \\
+            6.8546x^3-16.9807x^2-1.0245x+1.1390 & \quad 1.5 \leq x \leq 1.6 \\
+            34.7685x^3-14.9243x^2-4.2150x+0.8736 & \quad 1.6 \leq x \leq 2.0\\
+            -44.6632x^3+26.7979x^2+0.5344x-0.9751 & \quad 2.0 \leq x \leq 2.2
+        \end{array}
+    \right.
+\]
+
+C(1.8) = -0.2882
+
+\section{Problem 3}\label{problem-3}
+
+Write a Matlab function that computes the linear spline interpolation
+for a given data set. You might need to take a look at the file
+cspline\_eval.m in section 3.4 for some hints. Name your Matlab function
+lspline. This can be defined in the file lspline.m.
+
+Use your Matlab function lspline on the given data set in Problem 2,
+plot the linear spline for the interval {[}1.2, 2.2{]}.
+
+Matlab function:
+
+\begin{verbatim}
+function S = cspline_eval(t,y,z,x_vec)
+% function S = cspline_eval(t,y,z,x_vec)
+% compute the value of the natural cubic spline at the points x_vec when
+% t,y,z are given
+%
+% Example:   t = [0.9,1.3,1.9,2.1];
+%            y = [1.3,1.5,1.85,2.1]
+%            z = cspline(t,y)
+%            x = [0.9:0.1:2.1]
+%            v = cspline_eval(t,y,z,x)
+
+m = length(x_vec);
+S = zeros(size(x_vec));  
+n = length(t);
+for j=1:m
+  x = x_vec(j);
+  for i=n-1:-1:1
+    if (x-t(i)) >= 0
+      break
+    end
+  end
+  h = t(i+1)-t(i);
+  S(j) = z(i+1)/(6*h)*(x-t(i))^3-z(i)/(6*h)*(x-t(i+1))^3 ...
+       +(y(i+1)/h-z(i+1)*h/6)*(x-t(i)) - (y(i)/h-z(i)*h/6)*(x-t(i+1));
+end
+\end{verbatim}
+
+Input/Output:
+
+lspline(t,y,t)
+
+ans =
+
+\begin{quote}
+\begin{quote}
+0.4275 1.1390 0.8736 -0.9751 -0.1536
+\end{quote}
+\end{quote}
+
+x = {[}1.4 1.5 1.6 1.7 1.8{]};
+
+lspline(t,y,x)
+
+ans =
+
+\begin{quote}
+\begin{quote}
+0.9018 1.1390 0.8736 0.4114 -0.0508
+\end{quote}
+\end{quote}
+
+Which this 1.8 value is the same we got when manually evaluating the
+spline.
+
+Script to make plot:
+
+\begin{verbatim}
+x = 1.2:0.1:2.2;
+t = [1.2 1.5 1.6 2.0 2.2];
+y = [0.4275 1.139 0.8736 -0.9751 -0.1536];
+
+yVals = lspline(t,y,x);
+
+figure
+plot(x,yVals)
+grid on
+xlabel('Chosen Points')
+ylabel('Linear Spline Points')
+\end{verbatim}
+
+And the plot! If you compared adding extra points in the plot, that it
+does not change what is plotted, because you maintain the piecewise
+linear plot.
+
+\begin{figure}
+\centering
+\includegraphics{./Media/problem3Plot.png}
+\caption{}
+\end{figure}
+
+\section{Problem 4}\label{problem-4}
+
+I made a script that allows you to click the points on a screenshot of
+the image and it uses those points to run the spline interpolation that
+is then plotted. I clicked a series of twenty points, and more near the
+top in hopes that a higher resolution would make the top of the mountain
+sharper, since we konw that the cubic spline generates the smoothest
+interpolation. The peak does appear in the plot. I am including both the
+plot of the points and the Matlab printout of the points I clicked.
+
+\begin{verbatim}
+% display image
+everest = imread('../Media/mountEverest.png');
+image(everest)
+grid on
+
+% click knot points
+[t, y] = ginput(20);
+y = y.*-1;
+
+z = cspline(t, y);
+
+min = t(1);
+max = t(20);
+x = min:0.001:max;
+
+yPlot = cspline_eval(t, y, z, x);
+
+figure
+plot(x, yPlot)
+xlabel('Range of clicked points')
+ylabel('Interpolated Points')
+title('Interpolated ridge')
+\end{verbatim}
+
+The points (x, y):
+
+\begin{itemize}
+\tightlist
+\item
+  10.3318 -207.3163
+\item
+  32.3088 -188.9490
+\item
+  61.2258 -166.9082
+\item
+  95.9263 -141.1939
+\item
+  128.3134 -115.4796
+\item
+  173.4240 -81.6837
+\item
+  197.7143 -62.5816
+\item
+  212.7512 -52.2959
+\item
+  239.3548 -42.7449
+\item
+  252.0783 -44.9490
+\item
+  272.8986 -47.1531
+\item
+  287.9355 -61.1122
+\item
+  316.8525 -80.9490
+\item
+  337.6728 -110.3367
+\item
+  361.9631 -154.4184
+\item
+  373.5300 -186.7449
+\item
+  378.1567 -182.3367
+\item
+  389.7235 -173.5204
+\item
+  411.7005 -155.8878
+\item
+  462.5945 -218.3367
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics{./Media/mountEverestPlot.png}
+\caption{}
+\end{figure}
+
 
 \end{document}
