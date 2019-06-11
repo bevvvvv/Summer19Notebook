@@ -1,0 +1,14 @@
+% Function from first problem
+function y=func(x)
+    y = exp(-1.*x);
+end
+
+x = 0:0.2:0.8;
+n = [4 8 16 32 64 128];
+
+for i = 1:length(n)
+    
+end
+
+
+

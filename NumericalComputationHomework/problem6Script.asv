@@ -1,0 +1,9 @@
+
+vals = romberg('func',0,pi,5);
+
+format short e;
+
+for i = 1:length(vals(:,))
+    for j = 1:length(vals,:))
+
+

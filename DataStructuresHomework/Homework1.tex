@@ -1,0 +1,389 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Homework 1},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Homework 1}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \subtitle{Joseph Sepich}
+  \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\section{Problem 1}\label{problem-1}
+
+\subsection{a.}\label{a.}
+
+Functions as given:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(log^2(n)\)
+\item
+  \(n \choose 2\)
+\item
+  \(log(n^2)\)
+\item
+  \(log(n!)\)
+\item
+  \(2^{log(n)}\)
+\item
+  \(n*log(n)\)
+\item
+  \(4^{log(n)}\)
+\item
+  \(\sqrt n\)
+\item
+  \(2^{log^2(n)}\)
+\item
+  \(n\)
+\item
+  \(log(log(n))\)
+\end{enumerate}
+
+Recall the definition of big O notation:
+
+c \textgreater{} 0, n\textsubscript{0} \textgreater{} 0 and
+\(0 \leq f(n) \leq cg(n)\) for all \(n \geq n_0\)
+
+We will proceed by comparing each function to the previous and adjusting
+the order accordingly.
+
+Recall that \(n \choose 2\)= \(\frac{n!}{2(n-2)!}\)
+
+With n\textsubscript{0} = 1 and c = 1
+
+\[log^2(n) \leq \binom{n}{2} \]
+
+So we start with:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(log^2(n)\)
+\item
+  \(n \choose 2\)
+\end{enumerate}
+
+Now compare function 2. and 3.
+
+Here we can choose n\textsubscript{0} = 2 and c = 2
+
+\[log(n^2) \leq \frac{2n!}{2(n-2)!} = n(n-1)\]
+
+So compare 3. and 1.
+
+Here we can choose n\textsubscript{0} = 2 and c = 2
+
+\[log(n^2) \leq 2log^2(n)\]
+
+So we have:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(log(n^2)\)
+\item
+  \(log^2(n)\)
+\item
+  \(n \choose 2\)
+\end{enumerate}
+
+Now compare 3. and 4.
+
+Here we can choose n\textsubscript{0} = 2 and c = 1
+
+\[log(n!) \leq \binom{n}{2}\]
+
+And compare to \(log^2(n)\)
+
+We can choose n\textsubscript{0} = 1 and c = 1/2
+
+\[log^2(n) \leq 2log(n!)\]
+
+So we have:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(log(n^2)\)
+\item
+  \(log^2(n)\)
+\item
+  \(log(n!)\)
+\item
+  \(n \choose 2\)
+\end{enumerate}
+
+Next looking at \(2^{log(n)}\) we know equal x by logarithm properties,
+so we can put it between the two functions that increase at an
+increasing rate and increase at a decreasing rate and have:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(log(n^2)\)
+\item
+  \(log^2(n)\)
+\item
+  \(2^{log(n)}\)
+\item
+  \(log(n!)\)
+\item
+  \(n \choose 2\)
+\end{enumerate}
+
+Next we look at \(n*log(n)\)
+
+This function increases at an increasing rate, so we know it is above
+\(2^{log(n)}\) then let's compare to the next highest \(log(n!)\)
+
+Choosing n\textsubscript{0} = 1 and c = 1 we get
+
+\[n*log(n) \leq log(n!)\]
+
+So we have:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(log(n^2)\)
+\item
+  \(log^2(n)\)
+\item
+  \(2^{log(n)}\)
+\item
+  \(n*log(n)\)
+\item
+  \(log(n!)\)
+\item
+  \(n \choose 2\)
+\end{enumerate}
+
+Next we look at \(4^{log(n)}\). This is similar to the exponential
+function \(4^n\), so compare it to our fastest growing function:
+
+Choosing n\textsubscript{0} = 1 and c = 1 we get
+
+\[\binom{n}{2} \leq 4^{log(n)}\]
+
+So we have:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(log(n^2)\)
+\item
+  \(log^2(n)\)
+\item
+  \(2^{log(n)}\)
+\item
+  \(n*log(n)\)
+\item
+  \(log(n!)\)
+\item
+  \(n \choose 2\)
+\item
+  \(4^{log(n)}\)
+\end{enumerate}
+
+Next we look at \(\sqrt n\), which obviously grows less than the linear
+function \(2^{log(n)}\). Let's compare to our bottom two functions.
+
+Choose n\textsubscript{0} = 2 and c = 2
+
+\[\sqrt n \leq 2log^2(n)\]
+
+and choose n\textsubscript{0} = 1 and c = 3
+
+\[log(n^2) \leq 3\sqrt n\]
+
+So we have:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(log(n^2)\)
+\item
+  \(\sqrt n\)
+\item
+  \(log^2(n)\)
+\item
+  \(2^{log(n)}\)
+\item
+  \(n*log(n)\)
+\item
+  \(log(n!)\)
+\item
+  \(n \choose 2\)
+\item
+  \(4^{log(n)}\)
+\end{enumerate}
+
+log(log(n)) is the slowest growing with the composed log functions and n
+is the same function as \(2^{log(n)}\).
+
+Keeping with this process I get:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(log(log(n)\)
+\item
+  \(log(n^2)\)
+\item
+  \(log^2(n)\)
+\item
+  \(\sqrt n\)
+\item
+  \(2^{log(n)}\)
+\item
+  \(n\)
+\item
+  \(n*log(n)\)
+\item
+  \(log(n!)\)
+\item
+  \(n \choose 2\)
+\item
+  \(4^{log(n)}\)
+\item
+  \(2^{log^2(n)}\)
+\end{enumerate}
+
+\subsection{b.}\label{b.}
+
+Now we want to sort the functions into classes that are upper and lower
+bounded by each other. Basically can you find an n\textsubscript{0} and
+c for each other that it is upper bounded and a different one that they
+are lower bounded.
+
+There are only two groups of classes that I can see functions belonging
+to. The others are not grouped with anyone else.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(n\) and \(2^{log(n)}\) grow at the exact same rate \(\Theta n\).
+\item
+  \(\binom{n}{2}\) and \(4^{log(n)}\) are both bounded by
+  \(\Theta(n^2)\)
+\end{enumerate}
+
+The second group makes sense, because n choose 2 is the binomial
+coefficient, or the coefficient for the term x\^{}2, so it grows at a
+rate bounded \(\Theta(x^2)\). \(4^{log(n)}\) is equivalent to
+x\textsuperscript{2}, so it must be bounded.
+
+\section{Problem 2}\label{problem-2}
+
+We are running the insertion sort algorithm on the following input
+sequence:
+
+2,1,4,3,6,5,\ldots{},n,n-1
+
+We can see that each pair of numbers is switch around in order i.e.~1 is
+where 2 should be and 2 is where 1 should be, 3 is where 4 should be and
+4 is where 3 should be and so on up to n is where n-1 should be and n-1
+is where n should be.
+
+This means that for every 2 numbers we need to perform 4 actions (with
+exception of the first pair, since we start at the second index). This
+means we will perform \(4 * \frac{n}2\) actions or 2n actions. 2n is
+bother lower and upper bounded by n, if you use n\textsubscript{0} = 1,
+c = 1, and n\textsubscript{0} = 1, c = 3 respectively. Therefore the
+running time of the input here is \(\Theta(n)\).
+
+
+\end{document}
