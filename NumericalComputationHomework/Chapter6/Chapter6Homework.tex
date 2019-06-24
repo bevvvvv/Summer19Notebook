@@ -1,0 +1,928 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Chapter 6: Linear Systems},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Chapter 6: Linear Systems}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \subtitle{Joseph Sepich}
+  \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\section{Problem 1 Gaussian
+Elimination}\label{problem-1-gaussian-elimination}
+
+\subsection{a.}\label{a.}
+
+Consider the following 3x3 system:
+
+\[3.3330x_1 + 15920x_2 - 10.333x_3 = 7973.6\]
+\[2.2220x_1 + 16.710x_2 + 9.6120x_3 = 0.96500\]
+\[-1.5611x_1 + 5.1792x_2 - 1.6855x_3 = 2.7140\]
+
+Verify that the solution is \(x_1 = 1, x_2 = 0.5, x_3 = -1\).
+
+Solve the following system using naive Gaussian elimination with a
+calculator. All calculations should use 5 significant digits. Show
+details of your work.
+
+Starting matrix:
+
+\[
+\left(\begin{array}{ccc} 
+3.3330 & 15920 & -10.333\\
+2.2220 & 16.710 & 9.6120\\
+-1.5611 & 5.1792 & -1.6855
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+7973.6 \\
+0.96500 \\
+2.7140
+\end{array}\right)
+\]
+
+Step 1: \(a_1 = \frac1{3.333} a_1\)
+
+\[
+\left(\begin{array}{ccc} 
+1 & 477.65 & -3.1002\\
+2.2220 & 16.710 & 9.6120\\
+-1.5611 & 5.1792 & -1.6855
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+239.23 \\
+0.96500 \\
+2.7140
+\end{array}\right)
+\]
+
+Step 2: \(a_2 = a_2 - 2.222a_1\)
+
+\[
+\left(\begin{array}{ccc} 
+1 & 477.65 & -3.1002\\
+0 & -1059.7 & 16.501\\
+-1.5611 & 5.1792 & -1.6855
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+239.23 \\
+-5314.8 \\
+2.7140
+\end{array}\right)
+\]
+
+Step 3: \(a_3 = a_3 + 1.5611a_1\)
+
+\[
+\left(\begin{array}{ccc} 
+1 & 477.65 & -3.1002\\
+0 & -1059.7 & 16.501\\
+0 & 7461.7 & -6.5252
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+239.23 \\
+-5314.8 \\
+3737.4
+\end{array}\right)
+\]
+
+Step 4: \(a_2 = \frac1{-1059.7}a_2\)
+
+\[
+\left(\begin{array}{ccc} 
+1 & 477.65 & -3.1002\\
+0 & 1 & -0.00156\\
+0 & 7461.7 & -6.5252
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+239.23 \\
+0.50155 \\
+3737.4
+\end{array}\right)
+\]
+
+Step 5: \(a_3 = a_3 - 7461.7 * a_2\)
+
+\[
+\left(\begin{array}{ccc} 
+1 & 477.65 & -3.1002\\
+0 & 1 & -0.00156\\
+0 & 0 & 5.0939
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+239.23 \\
+0.50155 \\
+-5.0938
+\end{array}\right)
+\]
+
+Step 6: \(a_3 = \frac{1}{5.0939}\)
+
+\[
+\left(\begin{array}{ccc} 
+1 & 477.65 & -3.1002\\
+0 & 1 & -0.00156\\
+0 & 0 & 1
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+239.23 \\
+0.50155 \\
+-0.99999
+\end{array}\right)
+\]
+
+Step 7: \(a_1 = a_1 - 477.65 a_2\)
+
+\[
+\left(\begin{array}{ccc} 
+1 & 0 & -2.3551\\
+0 & 1 & -0.00156\\
+0 & 0 & 1
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+-0.33536 \\
+0.50155 \\
+-0.99999
+\end{array}\right)
+\]
+
+Step 8: \(a_1 = a_1 + 2.3551a_3\)
+
+\[
+\left(\begin{array}{ccc} 
+1 & 0 & 0\\
+0 & 1 & -0.00156\\
+0 & 0 & 1
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+0.99997 \\
+0.50155 \\
+-0.99999
+\end{array}\right)
+\]
+
+Step 9: \(a_1 = a_1 + 0.00156a_3\)
+
+\[
+\left(\begin{array}{ccc} 
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{array}\right)
+\left(\begin{array}{c} 
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right) =
+\left(\begin{array}{c}
+0.99997 \\
+0.499996 \\
+-0.99999
+\end{array}\right)
+\]
+
+I get the answer as state above. Not the exact numbers due to rounding
+errors.
+
+\subsection{b.}\label{b.}
+
+Consider the 2x2 system of linear equations.
+
+\[1.13x + 1.54y = 4.21\] \[1.14x + 1.57y = 4.28\]
+
+Verify that x = 1, y = 2 is the solution.
+
+Solve using Gaussian to 3 significant digits.
+
+\[
+\left(\begin{array}{ccc} 
+1.13 & 1.54 \\
+1.14 & 1.57
+\end{array}\right)
+\left(\begin{array}{c} 
+x \\
+y
+\end{array}\right) =
+\left(\begin{array}{c}
+4.21 \\
+4.28
+\end{array}\right)
+\]
+
+\[
+\left(\begin{array}{ccc} 
+1.13 & 1.54 \\
+0 & 0.0164
+\end{array}\right)
+\left(\begin{array}{c} 
+x \\
+y
+\end{array}\right) =
+\left(\begin{array}{c}
+4.21 \\
+0.0327
+\end{array}\right)
+\]
+
+\[
+\left(\begin{array}{ccc} 
+1.13 & 0 \\
+0 & 0.0164
+\end{array}\right)
+\left(\begin{array}{c} 
+x \\
+y
+\end{array}\right) =
+\left(\begin{array}{c}
+1.14 \\
+0.0327
+\end{array}\right)
+\]
+
+\[
+\left(\begin{array}{ccc} 
+1 & 0 \\
+0 & 1
+\end{array}\right)
+\left(\begin{array}{c} 
+x \\
+y
+\end{array}\right) =
+\left(\begin{array}{c}
+1.01 \\
+1.99
+\end{array}\right)
+\]
+
+The result of the elimination is the answer given above.
+
+\section{Problem 2. Gauss in Matlab}\label{problem-2.-gauss-in-matlab}
+
+When running the script I get a warning for the last vector. The
+outputted results are similar to the previous ones when using pivoting,
+but are very small when using naive Gaussian elimination. It is likely
+that the naive elimination is creating a large loss of significance.
+
+Script:
+
+\begin{verbatim}
+
+% Construct A and b in the following way
+
+% Case 1
+c = [0.2:0.2:1];
+A = vander(c);
+xsol = ones(size(c'));
+b = A*xsol;
+disp('Guassian:')
+naiv_gauss(A,b)
+disp('Pivoting:')
+A\b
+
+% Case 2
+c = [0.1:0.1:1];
+A = vander(c);
+xsol = ones(size(c'));
+b = A*xsol;
+disp('Guassian:')
+naiv_gauss(A,b)
+disp('Pivoting:')
+A\b
+
+
+% Case 3
+c = [0.05:0.05:1];
+A = vander(c);
+xsol = ones(size(c'));
+b = A*xsol;
+disp('Guassian:')
+naiv_gauss(A,b)
+disp('Pivoting:')
+A\b
+\end{verbatim}
+
+Output:
+
+Problem2Script Guassian:
+
+ans =
+
+\begin{itemize}
+\tightlist
+\item
+  0.999999999999612
+\item
+  1.000000000000889
+\item
+  0.999999999999494
+\item
+  1.000000000000104
+\item
+  0.999999999999993
+\end{itemize}
+
+Pivoting:
+
+ans =
+
+\begin{itemize}
+\tightlist
+\item
+  1.000000000000032
+\item
+  0.999999999999921
+\item
+  1.000000000000070
+\item
+  0.999999999999974
+\item
+  1.000000000000003
+\end{itemize}
+
+Guassian:
+
+ans =
+
+\begin{itemize}
+\tightlist
+\item
+  0.998774840610394
+\item
+  1.005853289548497
+\item
+  0.988068244628706
+\item
+  1.013568750263305
+\item
+  0.990551321010233
+\item
+  1.004157217864660
+\item
+  0.998851916215852
+\item
+  1.000190204544961
+\item
+  0.999983061158011
+\item
+  1.000000606254654
+\end{itemize}
+
+Pivoting:
+
+ans =
+
+\begin{itemize}
+\tightlist
+\item
+  1.000000000012049
+\item
+  0.999999999936912
+\item
+  1.000000000142096
+\item
+  0.999999999820241
+\item
+  1.000000000139617
+\item
+  0.999999999931755
+\item
+  1.000000000020688
+\item
+  0.999999999996307
+\item
+  1.000000000000348
+\item
+  0.999999999999987
+\end{itemize}
+
+Guassian:
+
+ans =
+
+1.0e+15 *
+
+\begin{itemize}
+\tightlist
+\item
+  0.100260367617011
+\item
+  -0.547611736692488
+\item
+  1.322086302655506
+\item
+  -1.861303854966565
+\item
+  1.697314314649383
+\item
+  -1.052455338465164
+\item
+  0.452613654373408
+\item
+  -0.134745815870952
+\item
+  0.027010370505822
+\item
+  -0.003364454050715
+\item
+  0.000193583684468
+\item
+  0.000007778825174
+\item
+  -0.000002060199317
+\item
+  0.000000130012968
+\item
+  -0.000000003878228
+\item
+  0.000000000134212
+\item
+  -0.000000000006845
+\item
+  0.000000000000244
+\item
+  -0.000000000000009
+\item
+  0.000000000000001
+\end{itemize}
+
+Pivoting:
+
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND = 5.884995e-18.
+
+In Problem2Script (line 33)
+
+ans =
+
+\begin{itemize}
+\tightlist
+\item
+  1.001948529862383
+\item
+  0.980676737577058
+\item
+  1.089164834273452
+\item
+  0.745765429700010
+\item
+  1.501655183245481
+\item
+  0.272979675952538
+\item
+  1.801520667803391
+\item
+  0.313048153146008
+\item
+  1.463758890491371
+\item
+  0.751644013870925
+\item
+  1.105732817783706
+\item
+  0.964296230726580
+\item
+  1.009498367655909
+\item
+  0.998032829037259
+\item
+  1.000311369627848
+\item
+  0.999963363162325
+\item
+  1.000003071985154
+\item
+  0.999999828557529
+\item
+  1.000000005621326
+\item
+  0.999999999919745
+\end{itemize}
+
+\section{Problem 3. Application of system of linear
+equations}\label{problem-3.-application-of-system-of-linear-equations}
+
+Script:
+
+\begin{verbatim}
+% alpha value
+alpha = cos(pi/4);
+
+% create and populate matrix
+A = sparse(21, 21);
+
+A(1,1) = -alpha;
+A(1,4) = 1;
+A(1,5) = alpha;
+
+A(2,1) = alpha;
+A(2,3) = 1;
+A(2,5) = alpha;
+
+A(3,2) = -1;
+A(3,6) = 1;
+
+A(4,3) = -1;
+A(4,18) = 1;
+
+A(5,4) = -1;
+A(5,8) = 1;
+
+A(6,7) = 1;
+
+A(7,5) = -alpha;
+A(7,6) = -1;
+A(7,9) = alpha;
+A(7,10) = 1;
+
+A(8,5) = -alpha;
+A(8,7) = -1;
+A(8,9) = -alpha;
+A(8,19) = 1;
+
+A(9,8) = -1;
+A(9,9) = -alpha;
+A(9,12) = 1;
+A(9,13) = alpha;
+
+A(10,9) = alpha;
+A(10,11) = 1;
+A(10,13) = alpha;
+
+A(11,10) = -1;
+A(11,14) = 1;
+
+A(12,11) = -1;
+A(12,20) = 1;
+
+A(13,13) = -alpha;
+A(13,14) = -1;
+A(13,17) = 1;
+
+A(14,13) = -alpha;
+A(14,15) = -1;
+A(14,21) = 1;
+
+A(15,12) = -1;
+A(15,16) = alpha;
+
+A(16,15) = 1;
+A(16,16) = alpha;
+
+A(17,16) = alpha;
+A(17,17) = 1;
+
+% Given forces
+A(18,18) = 1;
+A(19,19) = 1;
+A(20,20) = 1;
+A(21,21) = 1;
+
+
+% Loop over four situations
+disp('Forces from f1-f17 then F1-F4.')
+
+% four forces
+force =[10, 15, 0, 10;
+        15, 0, 0, 10;
+        10, 0, 20, 0;
+        0, 10, 10, 0];
+for i = 1:4
+    disp(strcat("Test Case: ",num2str(i)))
+    forces = force(i,:);
+    b = zeros(1,17);
+    b = [b forces];
+    b = b';
+    disp(A\b)
+end
+\end{verbatim}
+
+Output:
+
+Problem3Script
+
+Forces from f1-f17 then F1-F4.
+
+Test Case: 1
+
+\begin{itemize}
+\tightlist
+\item
+  -26.870057685088803
+\item
+  19.000000000000000
+\item
+  10.000000000000000
+\item
+  -28.000000000000000
+\item
+  12.727922061357853
+\item
+  19.000000000000000
+\item
+  0
+\item
+  -28.000000000000000
+\item
+  8.485281374238570
+\item
+  22.000000000000000
+\item
+  0
+\item
+  -15.999999999999996
+\item
+  -8.485281374238570
+\item
+  22.000000000000000
+\item
+  16.000000000000000
+\item
+  -22.627416997969519
+\item
+  16.000000000000000
+\item
+  10.000000000000000
+\item
+  15.000000000000000
+\item
+  0
+\item
+  10.000000000000000
+\end{itemize}
+
+Test Case: 2
+
+\begin{itemize}
+\tightlist
+\item
+  -19.798989873223331
+\item
+  14.000000000000000
+\item
+  15.000000000000000
+\item
+  -13.000000000000000
+\item
+  -1.414213562373095
+\item
+  14.000000000000000
+\item
+  0
+\item
+  -13.000000000000000
+\item
+  1.414213562373095
+\item
+  11.999999999999998
+\item
+  0
+\item
+  -10.999999999999998
+\item
+  -1.414213562373095
+\item
+  11.999999999999998
+\item
+  10.999999999999998
+\item
+  -15.556349186104043
+\item
+  10.999999999999998
+\item
+  15.000000000000000
+\item
+  0
+\item
+  0
+\item
+  10.000000000000000
+\end{itemize}
+
+Test Case: 3
+
+\begin{itemize}
+\tightlist
+\item
+  -22.627416997969522
+\item
+  16.000000000000000
+\item
+  10.000000000000000
+\item
+  -22.000000000000000
+\item
+  8.485281374238571
+\item
+  16.000000000000000
+\item
+  0
+\item
+  -22.000000000000000
+\item
+  -8.485281374238570
+\item
+  28.000000000000000
+\item
+  20.000000000000000
+\item
+  -14.000000000000000
+\item
+  -19.798989873223331
+\item
+  28.000000000000000
+\item
+  14.000000000000000
+\item
+  -19.798989873223331
+\item
+  14.000000000000000
+\item
+  10.000000000000000
+\item
+  0
+\item
+  20.000000000000000
+\item
+  0
+\end{itemize}
+
+Test Case: 4
+
+\begin{itemize}
+\tightlist
+\item
+  -14.142135623730953
+\item
+  10.000000000000000
+\item
+  0
+\item
+  -20.000000000000000
+\item
+  14.142135623730951
+\item
+  10.000000000000000
+\item
+  0
+\item
+  -20.000000000000004
+\item
+  0.000000000000001
+\item
+  20.000000000000000
+\item
+  10.000000000000000
+\item
+  -10.000000000000000
+\item
+  -14.142135623730949
+\item
+  20.000000000000000
+\item
+  10.000000000000000
+\item
+  -14.142135623730949
+\item
+  10.000000000000000
+\item
+  0
+\item
+  10.000000000000000
+\item
+  10.000000000000000
+\item
+  0
+\end{itemize}
+
+The fact that I get negative forces in my output isn't necessarily a
+problem, it just means that they were going the opposite direction to
+which I expected them to be going.
+
+
+\end{document}
