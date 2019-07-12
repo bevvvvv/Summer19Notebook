@@ -1,0 +1,214 @@
+---
+title: "Chapter 9: Numerical Methods for ODE"
+subtitle: "Joseph Sepich"
+output:
+  pdf_document: 
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    keep_tex: true
+  html_notebook: default
+---
+
+```{r include = FALSE}
+# refresh environment
+rm(list = ls())
+library(dplyr) # utility package for tidyverse
+library(tidyverse)
+```
+
+# Problem 1 Scalar ODE
+
+\[x' = 2x^2 + x - 1, x(1) = 1\]
+
+## a.
+
+Write out Euler's method for this ODE. Compute the value of x(1.2) usign Euler's method, with h = 0.1.
+
+Recall Euler's method itself:
+
+\[x_1 = x_0 + hx'(t_0) = x_0 + h*f(t_0,x_0)\]
+
+Let's compute to x(1.2):
+
+\[x(1.1) = x_0 + hf(t_0,x_0) = 1 + 0.1 * 2 = 1.2\]
+\[x(1.2) = x_1 + hf(t_1,x_1) = 1.2 + 0.1 * 3.08 = 1.508\]
+
+## b.
+
+Write out Heun's method for this ODE. Compute the value x(1.2) by Heun's method with h = 0.1.
+
+Recall Heun's method:
+
+\[x_{k+1} = x_k + \frac12(K_1 + K_2)\]
+\[K_1 = h*f(t_k, x_k)\]
+\[K_2 = h*f(t_k + h, x_k + K_1)\]
+
+Let's compute to x(1.2):
+
+At $x_0 = 1, t_0 = 1$:
+
+\[K_1 = 0.1 * 2 = 0.2\]
+\[K_2 = 0.1 * 3.08 = 0.308\]
+\[x(1.1) = 1 + \frac12(0.2 + 0.308) = 1.254\]
+
+At $x_1 = 1.254, t_0 = 1.1$:
+
+\[K_1 = 0.1 * 3.399 = 0.3399\]
+\[K_2 = 0.1 * 5.6749 = 0.5675\]
+\[x(1.2) = 1.254 + \frac12(0.3399 + 0.5675) = 1.7077\]
+
+## c
+
+Write out the classic 4th order RK method for this ODE. Compute the value x(1.2) by RK4 method with h = 0.1.
+
+Recall RK4 method:
+
+\[x_{k+1} = x_k + \frac16(K_1 + 2K_2 + 2K_3 + K_4)\]
+\[K_1 = h*f(t_k, x_k)\]
+\[K_2 = h*f(t_k + \frac12h, x_k + \frac12K_1)\]
+\[K_3 = h*f(t_k + \frac12h, x_k + \frac12K_2)\]
+\[K_4 = h*f(t_k + h, x_k + K_3)\]
+
+At $x_0 = 1, t_0 = 1$:
+
+\[K_1 = 0.1 * 2 = 0.2\]
+\[K_2 = 0.1 * 2.52 = 0.252 \]
+\[K_3 = 0.1 * 2.6618 = 0.2662\]
+\[K_4 = 0.1 * 3.2333 = 0.3233\]
+\[x(1.1) = 1 + \frac16(0.2 + 2 * 0.252 + 2 * 0.2262 + 0.3233) = 1.247\]
+
+At $x_1 = 1.247, t_0 = 1.1$
+
+\[K_1 = 0.1 * 1.802 = 0.1802\]
+\[K_2 = 0.1 * 2.467 = 0.2467\]
+\[K_3 = 0.1 * 2.647 = 0.2647\]
+\[K_4 = 0.1 * 3.464 = 0.3464\]
+\[x(1.2) = 1.247 + \frac16(0.1802 + 2 * 0.2467 + 2 * 0.2647 + 0.3464) = 1.505\]
+
+## d
+
+Write out 2nd order ABM method for this ODE. Note that this is a multi-step method. it needs 2 initial values to initiate the iterations. For the second initial value you can use the result obtained in part b with Heun's method. Compute the values x(1.2) and x(1.3) using the ABM method.
+
+Here we add the intial value $x_1 = 1.1, t_1 = 1.254$. Recall the ABM method:
+
+\[x_{n+1} = x_n + \frac{h}2(3f(t_n,x_n) - f(t_{n-1}, x_{n-1}))\]
+
+To compute $x(1.2) = x_2$:
+
+\[x(1.2) = 1.254 + 0.1/ 2 * (3*3.399 - 2) = 1.664\]
+
+To compute $x(1.3) = x_3$:
+
+\[x(1.3) = 1.664 + 0.1/2 *(3*6.2018 - 3.399) = 2.424\]
+
+# Problem 2
+
+Given the following high order ordinary differential equation
+
+\[x'''(t) = -2x'' + xt, x(0) = 1, x'(0) = 2, x''(0) = 3\]
+
+## a
+
+Rewrite the equation into a system of first order equations. Make sure to include the intial conditions.
+
+$$
+\begin{cases} 
+      x'_1 = x_2 \\
+      x'_2 = x_3 \\
+      x'_3 = -2x_3 + x_1t\\  
+\end{cases}
+$$
+
+Initial values at $t = 0$:
+
+$$
+\begin{cases} 
+      x_1 = 1 \\
+      x_2 = 2 \\
+      x_3 = 3 \\
+\end{cases}
+$$
+
+## b
+
+Set up the forward Euler step for the system in (a) with h = 0.1
+
+Recall the forward Euler method:
+
+\[x_{k+1} = x_k + hx'(t_k) = x_k + h*f(t_k,x_k)\]
+
+Here we have the values:
+
+\[x_k = (x_1^0, x_2^0, x_3^0)^T\]
+
+This first vector is our initial condition.
+
+\[x_k' = (x_1', x_2',x_3')^T = (x_2^0, x_3^0, -2x_3^0+x_1^0t_0)^T\]
+
+This gives us the setup:
+
+\[x_{k+1} = x_k + 0.1 * x_k' = (x_1^0, x_2^0, x_3^0)^T + 0.1 * (x_2^0, x_3^0, -2x_3^0+x_1^0t_0)^T\]
+
+## c
+
+Write a Matlab script that computes 10 Euler steps, to obtain the value of $x_10 \approx x(1)$
+
+My scipt:
+
+```{}
+% Setup intial conditions
+% t starts at zero
+t = 0;
+h = 0.1;
+xPrev = [1; 2; 3;];
+xPrevPrime = [xPrev(2); xPrev(3); myFunc(xPrev, t)];
+
+for i = 1:10
+   xPrev =  xPrev + h .* xPrevPrime;
+   xPrevPrime = [xPrev(2); xPrev(3); myFunc(xPrev, t)];
+   % increment t
+   t = t + h;
+end
+
+disp(xPrev)
+disp(t)
+
+% differential equations
+function out=myFunc(x, t) 
+    out = -2 * x(3) + x(1) * t;
+end
+```
+
+My output (value of x(1) and value of t):
+
+Problem2Script
+
+* 3.8514
+* 3.4875
+* 1.0241
+
+* 1.0000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
